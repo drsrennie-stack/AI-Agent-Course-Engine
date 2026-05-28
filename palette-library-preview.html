@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CourseForge Palette Library Preview</title>
+<meta name="description" content="Visual review of 23 proposed CourseForge palettes with mapped color roles and working names.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root {
+  --navy: #0B1530;
+  --navy-deep: #050913;
+  --navy-tint: #EDF1F3;
+  --gold: #C9A14A;
+  --terra: #A0522D;
+  --terra-dark: #8B3A2E;
+  --white: #FFFFFF;
+  --offwhite: #FAFAF9;
+  --rule: #DCE0E6;
+  --rule-soft: #ECEFF2;
+  --ink-muted: #5A6573;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; font-style: normal; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  background: var(--offwhite);
+  color: var(--navy);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--navy); text-underline-offset: 3px; text-decoration-color: var(--gold); }
+a:hover, a:focus-visible { color: var(--navy-deep); }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+
+a.skip {
+  position: absolute; left: -9999px; top: 8px;
+  background: var(--navy); color: var(--white); padding: 8px 14px; border-radius: 4px;
+  font-weight: 700; font-size: 13px;
+}
+a.skip:focus { left: 16px; }
+
+.wrap { max-width: 1280px; margin: 0 auto; padding: 36px 24px 96px; }
+
+header.page { margin-bottom: 28px; }
+.logo-mark { margin-bottom: 20px; }
+.logo-mark svg { display: block; height: auto; max-width: 240px; width: 100%; }
+.eyebrow {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--terra-dark);
+  margin-bottom: 10px;
+}
+.wordmark {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 38px; font-weight: 800; line-height: 1.1;
+  letter-spacing: -0.01em; margin-bottom: 8px;
+}
+.wordmark .course { color: var(--navy); }
+.wordmark .forge  { color: var(--terra-dark); }
+h2.subhead {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 20px; font-weight: 600; color: var(--terra-dark);
+  margin-bottom: 14px;
+}
+.lede { color: var(--ink-muted); max-width: 760px; font-size: 15px; }
+.lede strong { color: var(--navy); }
+
+.legend {
+  margin: 22px 0 0; padding: 14px 16px;
+  background: var(--white); border: 1px solid var(--rule); border-radius: 4px;
+  font-size: 13px; color: var(--ink-muted);
+}
+.legend strong { color: var(--navy); }
+.legend .roles { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 6px; }
+.legend .roles span { display: inline-flex; align-items: center; gap: 6px; }
+.legend .dot { width: 12px; height: 12px; border-radius: 2px; display: inline-block; border: 1px solid var(--rule); }
+
+nav.controls {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin: 24px 0; padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  align-items: center;
+}
+nav.controls .label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-muted);
+  margin-right: 4px;
+}
+.chip {
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  padding: 6px 14px; border-radius: 99px;
+  background: var(--white); color: var(--navy);
+  border: 1px solid var(--rule); cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.chip:hover { border-color: var(--gold); }
+.chip[aria-pressed="true"] {
+  background: var(--navy); color: var(--white); border-color: var(--navy);
+}
+.count { color: var(--ink-muted); font-size: 12px; margin-left: auto; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 18px;
+}
+
+article.tile {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  box-shadow: 0 1px 3px rgba(10,19,34,0.06);
+  display: flex; flex-direction: column;
+  cursor: pointer;
+}
+article.tile:hover, article.tile:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(10,19,34,0.10);
+  border-color: var(--gold);
+}
+
+.swatches { display: flex; height: 88px; }
+.swatch { flex: 1; position: relative; }
+.swatch .role {
+  position: absolute; bottom: 5px; left: 6px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.swatch .hex {
+  position: absolute; top: 5px; right: 6px;
+  font-family: 'Plus Jakarta Sans', monospace;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+
+.meta { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; }
+.name-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 18px; font-weight: 800; color: var(--navy);
+  margin-bottom: 3px; line-height: 1.2;
+}
+.featured {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--terra-dark);
+  background: rgba(160,82,45,0.10);
+  padding: 3px 8px; border-radius: 99px; white-space: nowrap;
+}
+.source { font-size: 11px; color: var(--ink-muted); margin-bottom: 10px; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.tag {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 3px 9px; border-radius: 99px;
+}
+.tag.vibe-academic  { background: rgba(30,61,76,0.08);  color: var(--navy); }
+.tag.vibe-editorial { background: rgba(160,82,45,0.10); color: var(--terra-dark); }
+.tag.vibe-warm      { background: rgba(194,115,77,0.14); color: var(--terra-dark); }
+.tag.vibe-cool      { background: rgba(91,154,160,0.18); color: #2E6E75; }
+.tag.vibe-bold      { background: rgba(184,74,74,0.14);  color: #8A2C2C; }
+.tag.warn           { background: rgba(184,146,74,0.16); color: #6B5520; }
+
+.note {
+  font-size: 12px; color: var(--ink-muted);
+  padding-top: 10px; margin-top: auto;
+  border-top: 1px dashed var(--rule-soft);
+  line-height: 1.55;
+}
+.note strong { color: var(--navy); }
+
+section.bucket-heading {
+  grid-column: 1 / -1;
+  display: none;
+}
+
+footer.outro {
+  margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--rule);
+  font-size: 13px; color: var(--ink-muted);
+}
+footer.outro p { margin-bottom: 8px; }
+footer.outro strong { color: var(--navy); }
+
+@media (max-width: 580px) {
+  .wordmark { font-size: 30px; }
+  h2.subhead { font-size: 17px; }
+  .grid { grid-template-columns: 1fr; }
+  .wrap { padding: 24px 16px 64px; }
+}
+
+/* Modal: live light + dark preview */
+.modal {
+  position: fixed; inset: 0; z-index: 50;
+  display: none; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.modal[open] { display: flex; }
+.modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(10,19,34,0.55);
+}
+.modal-panel {
+  position: relative; background: var(--offwhite);
+  border-radius: 4px; max-width: 980px; width: 100%;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(10,19,34,0.30);
+  border: 1px solid var(--rule);
+}
+.modal-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 14px; padding: 20px 24px 14px;
+  border-bottom: 1px solid var(--rule);
+  position: sticky; top: 0; background: var(--offwhite); z-index: 1;
+}
+.modal-header > div { min-width: 0; }
+.modal-eyebrow {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--terra-dark); margin-bottom: 4px;
+}
+.modal-header h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 22px; font-weight: 800; color: var(--navy);
+  line-height: 1.2;
+}
+.modal-close {
+  background: transparent; border: 1px solid var(--rule);
+  color: var(--navy); width: 36px; height: 36px;
+  border-radius: 4px; font-size: 22px; line-height: 1;
+  cursor: pointer; transition: border-color .15s, background .15s;
+  flex-shrink: 0; font-family: inherit;
+}
+.modal-close:hover, .modal-close:focus-visible {
+  border-color: var(--gold); background: var(--white);
+}
+.modal-body { padding: 18px 24px 24px; }
+.mode-toggle { display: flex; gap: 6px; margin-bottom: 16px; }
+.mode-toggle button {
+  font-family: inherit; font-size: 12px; font-weight: 700;
+  padding: 5px 14px; border-radius: 99px;
+  background: var(--white); color: var(--navy);
+  border: 1px solid var(--rule); cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.mode-toggle button[aria-selected="true"] {
+  background: var(--navy); color: var(--white); border-color: var(--navy);
+}
+.previews {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.previews.single { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
+.preview-shell {
+  border: 1px solid var(--rule); border-radius: 4px;
+  overflow: hidden; background: var(--white);
+}
+.preview-shell-label {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; background: var(--navy-tint);
+  border-bottom: 1px solid var(--rule);
+}
+.preview-shell-label .pill {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 3px 9px; border-radius: 99px;
+}
+.preview-shell-label .pill.light { background: var(--white); color: var(--navy); border: 1px solid var(--rule); }
+.preview-shell-label .pill.dark { background: var(--navy); color: var(--white); }
+.preview-shell-label .label-text {
+  font-size: 11px; color: var(--ink-muted); font-weight: 600;
+}
+@media (max-width: 720px) {
+  .previews { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<a href="#grid" class="skip">Skip to palette grid</a>
+
+<main class="wrap">
+<header class="page">
+  <div class="logo-mark">
+    <svg viewBox="0 0 720 200" role="img" aria-label="MedMasters Collaborative">
+      <title>MedMasters Collaborative</title>
+      <g transform="translate(0, 18)">
+        <g transform="translate(60, 0) rotate(8 0 130)">
+          <circle cx="0" cy="20" r="10" fill="#0B1530"/>
+          <path d="M 0,32 C -10,32 -16,36 -16,42 C -16,55 -13,68 -11,82 C -10,100 -12,118 -14,130 L 14,130 C 12,118 10,100 11,82 C 13,68 16,55 16,42 C 16,36 10,32 0,32 Z" fill="#0B1530"/>
+        </g>
+        <g transform="translate(100, 0)">
+          <circle cx="0" cy="10" r="11" fill="#8B3A2E"/>
+          <path d="M 0,22 C -11,22 -17,26 -17,34 C -17,52 -14,70 -12,86 C -11,108 -13,122 -15,132 L 15,132 C 13,122 11,108 12,86 C 14,70 17,52 17,34 C 17,26 11,22 0,22 Z" fill="#8B3A2E"/>
+        </g>
+        <g transform="translate(140, 0) rotate(-8 0 130)">
+          <circle cx="0" cy="20" r="10" fill="#C9A14A"/>
+          <path d="M 0,32 C -10,32 -16,36 -16,42 C -16,55 -13,68 -11,82 C -10,100 -12,118 -14,130 L 14,130 C 12,118 10,100 11,82 C 13,68 16,55 16,42 C 16,36 10,32 0,32 Z" fill="#C9A14A"/>
+        </g>
+      </g>
+      <g transform="translate(240, 0)" font-family="Plus Jakarta Sans, system-ui, sans-serif">
+        <text x="0" y="118" font-size="80" font-weight="800" letter-spacing="-2">
+          <tspan fill="#0B1530">Med</tspan><tspan fill="#8B3A2E">Masters</tspan>
+        </text>
+        <text x="0" y="158" font-size="15" font-weight="700" letter-spacing="5" fill="#0B1530" opacity="0.75">COLLABORATIVE</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eyebrow">Internal Review &middot; CourseForge</div>
+  <h1 class="wordmark"><span class="course">Course</span><span class="forge">Forge</span></h1>
+  <h2 class="subhead">Palette Library Preview</h2>
+  <p class="lede">
+    18 proposals grouped by vibe. Each tile shows the 4 mapped roles (Primary, Accent, Warm, Cool) plus a working name. <strong>Click any tile</strong> to see how a course hub looks in light and dark mode using that palette.
+    The <strong>Bold / Commercial</strong> filter holds the high-energy palettes. They're tagged "Use with care" because they're better suited to marketing, design, or business courses than to clinical anatomy.
+    Tell me which names to keep, swap, or kill. Then I patch the engine.
+  </p>
+
+  <aside class="legend" aria-label="What the color roles mean">
+    <strong>How CourseForge uses the 4 roles:</strong>
+    <div class="roles">
+      <span><span class="dot" style="background:#0A1322"></span> <strong>P</strong> Primary — text, anchor backgrounds, dark mode bg</span>
+      <span><span class="dot" style="background:#D4A24C"></span> <strong>A</strong> Accent — CTAs, badges, highlights, focus rings</span>
+      <span><span class="dot" style="background:#C25A3E"></span> <strong>W</strong> Warm — anatomy content, required items, eyebrow text</span>
+      <span><span class="dot" style="background:#5B9AA0"></span> <strong>C</strong> Cool — physiology content, optional items, secondary borders</span>
+    </div>
+  </aside>
+</header>
+
+<nav class="controls" role="toolbar" aria-label="Filter palettes by vibe">
+  <span class="label">Filter</span>
+  <button class="chip" aria-pressed="true" data-filter="all" type="button">All (18)</button>
+  <button class="chip" aria-pressed="false" data-filter="academic" type="button">Academic</button>
+  <button class="chip" aria-pressed="false" data-filter="editorial" type="button">Editorial</button>
+  <button class="chip" aria-pressed="false" data-filter="warm" type="button">Warm</button>
+  <button class="chip" aria-pressed="false" data-filter="cool" type="button">Cool</button>
+  <button class="chip" aria-pressed="false" data-filter="bold" type="button">Bold / Commercial</button>
+  <span class="count" id="count" aria-live="polite">Showing 23</span>
+</nav>
+
+<div class="grid" id="grid" role="list"></div>
+
+<footer class="outro">
+  <p><strong>Click any tile</strong> to see the palette applied to a sample course hub in both light and dark mode. Inside the modal: a "Side by side / Light only / Dark only" toggle. Press Escape or click outside to close.</p>
+  <p><strong>On the "does there need to be 4 colors" question:</strong> The 4 roles map to specific content semantics in your generated pages. Warm carries anatomy and required items. Cool carries physiology and optional items. Losing those would weaken the pedagogical signal in BIO 004 and BIO 431 outputs. So yes, 4 roles stay. But it's fine for a palette to repeat a color across two slots when the source only has 3 distinct colors. Several palettes here do that honestly: Bronte Ridge, Cathedral, Recess, Disco Reactor.</p>
+  <p><strong>Names worth a second look:</strong> stars (★) mark the ones I felt strongest about. Saturday Funnies is the comic-book one you flagged. Alternates considered: Kapow!, Inked Edition, Sunday Strip, Newsstand.</p>
+  <p><strong>Custom hex codes stay.</strong> The existing "Build Your Own" feature in CourseForge (color pickers + hex text inputs) is preserved. It will live in the redesigned engine alongside the 18 presets, so you can still hand-roll a palette for a one-off course. Open question: should custom expand from 3 inputs (Primary / Accent / Tertiary) to 4 (Primary / Accent / Warm / Cool) to match the preset structure?</p>
+  <p>Once you sign off on names + the custom-input question, I patch courseforge.jsx with the final 18-palette data, rebuild PalCard as swatches-only, add the vibe filter chips, and then tackle the engine UI redesign: light theme, two-tone wordmark, no emojis, WCAG AA throughout.</p>
+</footer>
+</main>
+
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <header class="modal-header">
+      <div>
+        <div class="modal-eyebrow">Palette in action</div>
+        <h3 id="modal-title">Palette</h3>
+      </div>
+      <button class="modal-close" data-close aria-label="Close preview" type="button">&times;</button>
+    </header>
+    <div class="modal-body">
+      <div class="mode-toggle" role="tablist" aria-label="Display mode">
+        <button role="tab" aria-selected="true" data-mode="both" type="button">Side by side</button>
+        <button role="tab" aria-selected="false" data-mode="light" type="button">Light only</button>
+        <button role="tab" aria-selected="false" data-mode="dark" type="button">Dark only</button>
+      </div>
+      <div class="previews" id="previews"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const PALETTES = [
+  // ACADEMIC
+  { id:"medmasters", name:"MedMasters", featured:"Default", source:"Brand-canonical (matches your logo)", vibe:"academic",
+    p:"#0B1530", a:"#C9A14A", w:"#8B3A2E", c:"#5B9AA0",
+    note:"Your house palette, locked to the exact hex values used in the MedMasters logo SVGs: navy #0B1530, rust #8B3A2E (the darker terra cotta you wanted), gold #C9A14A. Teal cool #5B9AA0 stays from the teaching system since the logo has no cool slot." },
+  { id:"bronte-ridge", name:"Bronte Ridge", source:"Brontide (mountain landscape)", vibe:"academic",
+    p:"#09868b", a:"#3d7c47", w:"#76c1d4", c:"#76c1d4",
+    note:"Deep teal anchor + forest green CTA. <strong>Note:</strong> no true warm in source, so warm and cool both ride on the light blue. Works for ecology, environmental science, geography." },
+  { id:"atrium", name:"Atrium Society ★", source:"Idea Fuel / Brand Led (rose gold + onyx)", vibe:"academic",
+    p:"#49494b", a:"#bd8c7d", w:"#d1bfa7", c:"#8e8e90",
+    note:"Quiet magazine elegance. Onyx anchor, rose gold CTA. Great for humanities, history, classical studies." },
+  { id:"field-notes", name:"Field Notes ★", source:"Five / Four (red + earthy gold)", vibe:"academic",
+    p:"#628078", a:"#ff3a22", w:"#c7af6b", c:"#a4893d",
+    note:"Sage-grey anchor with a hot red CTA. Reads like a researcher's notebook. Strong for biology, ecology, anthropology." },
+  { id:"cathedral", name:"Cathedral", source:"Dogstudio (deep navy + bookish red)", vibe:"academic",
+    p:"#091f36", a:"#9e363a", w:"#9e363a", c:"#4f5f76",
+    note:"Library-quiet. Warm and accent share the red. Good for literature, theology, philosophy." },
+  { id:"stoneworks", name:"Stoneworks", source:"Joyaux Lookbook (neutrals)", vibe:"academic",
+    p:"#82716e", a:"#c2b490", w:"#e4decd", c:"#acb7ae",
+    note:"All-neutral. Reads as gallery wall. Restrained, won't compete with content. Good for art history, design history." },
+
+  // EDITORIAL
+  { id:"brownstone", name:"Brownstone", source:"MR Associates (brick + algae)", vibe:"editorial",
+    p:"#91684a", a:"#cd5554", w:"#cd5554", c:"#00c07f",
+    note:"Brownstone brick anchor. Algae green cool is unexpected but it works for callouts." },
+  { id:"pharaohs-atelier", name:"Pharaoh's Atelier ★", source:"GotoEgypt (night blue + sand)", vibe:"editorial",
+    p:"#12343b", a:"#e1b382", w:"#c89666", c:"#2d545e",
+    note:"Strong night-blue anchor + warm sand accents. High contrast, archival feel. Great for ancient history, art history, classical." },
+  { id:"press-room", name:"Press Room", source:"Simple Publishing (grey + orange)", vibe:"editorial",
+    p:"#393939", a:"#FF5A09", w:"#ec7f37", c:"#be4f0c",
+    note:"Newspaper grey + saturated orange CTA. All-warm secondaries. Suits journalism, communications, writing courses." },
+  { id:"workshop-yellow", name:"Workshop Yellow", source:"Indian Scout (slate + yellow)", vibe:"editorial",
+    p:"#1d1e22", a:"#feda6a", w:"#feda6a", c:"#393f4d",
+    note:"Mechanic-shop confidence. Slate-black + saturated yellow. Good for technical, trades, engineering." },
+
+  // WARM
+  { id:"linen-indigo", name:"Linen and Indigo", source:"Desi Shirt (navy + peach + tan)", vibe:"warm",
+    p:"#3a4660", a:"#ed8a63", w:"#c9af98", c:"#845007",
+    note:"Soft peach over navy. <strong>Note:</strong> cool slot is technically a warm brown. Reads cozy, fashion-design-adjacent." },
+  { id:"picnic-basket", name:"Picnic Basket", source:"Territory (blueberry + apricot + citrus)", vibe:"warm",
+    p:"#6B7A8F", a:"#F7882F", w:"#F7C331", c:"#DCC7AA",
+    note:"Bright produce-aisle energy. Blueberry anchor saves it from being too sweet." },
+
+  // COOL
+  { id:"studio-audacieux", name:"Studio Audacieux ★", source:"Le Cab Com (navy + goldenrod + bluebell)", vibe:"cool",
+    p:"#101357", a:"#fbaf08", w:"#fea49f", c:"#00a0a0",
+    note:"Deep navy + goldenrod CTA + bluebell teal. Confident, French. Versatile across disciplines." },
+  { id:"recess", name:"Recess", source:"Intellectual Nonchalance / L'Avenir (purple + teal + red)", vibe:"cool",
+    p:"#9068be", a:"#e62739", w:"#e62739", c:"#6ed3cf",
+    note:"Soft purple anchor. Schoolhouse-spirited. Works for healthcare, dental hygiene, pediatric anything." },
+  { id:"idle-hands", name:"Idle Hands", source:"Carbonex (mountain purple + grassy green)", vibe:"cool",
+    p:"#7c677f", a:"#9bc400", w:"#f9c5bd", c:"#8076a3",
+    note:"Misty mountain palette + a punchy grass-green CTA. Sustainability, environmental, climate." },
+
+  // BOLD / COMMERCIAL
+  { id:"saturday-funnies", name:"Saturday Funnies ★", source:"No Crime / Feel Safe (green + red + blue)", vibe:"bold",
+    p:"#1400c6", a:"#beef00", w:"#ff0028", c:"#657a00",
+    note:"<strong>The comic-book one.</strong> Inked-panel energy. Use With Care: not for clinical course pages, but solid for marketing, design, illustration, or branding courses. Alts considered: Kapow!, Inked Edition, Sunday Strip, Newsstand." },
+  { id:"disco-reactor", name:"Disco Reactor", source:"Fotonaut (red + purple)", vibe:"bold",
+    p:"#781a44", a:"#eb1736", w:"#eb1736", c:"#5252d4",
+    note:"Synth-wave retro-future. Good for film, music, performance arts." },
+  { id:"lightbrite", name:"Lightbrite", source:"Futuristic Lightbrite (purple + orange + yellow)", vibe:"bold",
+    p:"#431c5d", a:"#e05915", w:"#cdd422", c:"#c2dde6",
+    note:"Deep purple anchor saves this from being chaotic. 80s toy energy. Suits creative arts, illustration, kids-ed." },
+];
+
+const grid = document.getElementById('grid');
+const count = document.getElementById('count');
+const chips = document.querySelectorAll('.chip');
+let active = 'all';
+
+function textColor(hex) {
+  const h = hex.replace('#','');
+  const r = parseInt(h.slice(0,2),16);
+  const g = parseInt(h.slice(2,4),16);
+  const b = parseInt(h.slice(4,6),16);
+  const lum = (0.299*r + 0.587*g + 0.114*b) / 255;
+  return lum > 0.58 ? 'rgba(0,0,0,0.72)' : 'rgba(255,255,255,0.92)';
+}
+
+function render() {
+  const list = active === 'all' ? PALETTES : PALETTES.filter(p => p.vibe === active);
+  grid.innerHTML = list.map(p => {
+    const featured = p.featured ? `<span class="featured">${p.featured}</span>` : '';
+    const warnTag = p.note && p.note.includes('No dark anchor') ? '<span class="tag warn">Use With Care</span>' : '';
+    const bcTag = p.vibe === 'bold' ? '<span class="tag warn">Use With Care</span>' : '';
+    const tagSet = p.vibe === 'bold' ? bcTag : warnTag;
+    return `
+    <article class="tile" role="listitem" tabindex="0" data-id="${p.id}" aria-labelledby="name-${p.id}">
+      <div class="swatches" aria-hidden="true">
+        <div class="swatch" style="background:${p.p}"><span class="role" style="color:${textColor(p.p)}">Primary</span><span class="hex" style="color:${textColor(p.p)}">${p.p}</span></div>
+        <div class="swatch" style="background:${p.a}"><span class="role" style="color:${textColor(p.a)}">Accent</span><span class="hex" style="color:${textColor(p.a)}">${p.a}</span></div>
+        <div class="swatch" style="background:${p.w}"><span class="role" style="color:${textColor(p.w)}">Warm</span><span class="hex" style="color:${textColor(p.w)}">${p.w}</span></div>
+        <div class="swatch" style="background:${p.c}"><span class="role" style="color:${textColor(p.c)}">Cool</span><span class="hex" style="color:${textColor(p.c)}">${p.c}</span></div>
+      </div>
+      <div class="meta">
+        <div class="name-row">
+          <div class="name" id="name-${p.id}">${p.name}</div>
+          ${featured}
+        </div>
+        <div class="source">from ${p.source}</div>
+        <div class="tags"><span class="tag vibe-${p.vibe}">${p.vibe === 'bold' ? 'Bold / Commercial' : p.vibe}</span>${tagSet}</div>
+        <div class="note">${p.note}</div>
+      </div>
+    </article>`;
+  }).join('');
+  count.textContent = `Showing ${list.length}`;
+}
+
+chips.forEach(c => {
+  c.addEventListener('click', () => {
+    chips.forEach(x => x.setAttribute('aria-pressed','false'));
+    c.setAttribute('aria-pressed','true');
+    active = c.dataset.filter;
+    render();
+  });
+});
+
+render();
+
+// Modal: live light + dark course-hub preview
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modal-title');
+const previews = document.getElementById('previews');
+const modeButtons = modal.querySelectorAll('.mode-toggle button');
+let currentPalette = null;
+let lastFocus = null;
+
+function gradeRow(label, pct, fill, color, isDark, cardBg, cardBorder) {
+  const trackBg = isDark ? 'rgba(255,255,255,0.1)' : '#E5E7EB';
+  return '<div style="background:' + cardBg + ';border:1px solid ' + cardBorder + ';border-radius:4px;padding:10px 12px;margin-bottom:6px;">'
+    + '<div style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:10px;font-weight:700;color:' + color + ';letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px;">' + label + '</div>'
+    + '<div style="display:flex;align-items:center;gap:8px;">'
+      + '<div style="flex:1;height:4px;background:' + trackBg + ';border-radius:99px;overflow:hidden;">'
+        + '<div style="width:' + fill + '%;height:100%;background:' + color + ';"></div>'
+      + '</div>'
+      + '<span style="font-size:11px;font-weight:700;">' + pct + '</span>'
+    + '</div>'
+  + '</div>';
+}
+
+function buildPreviewHTML(p, mode) {
+  const isDark = mode === 'dark';
+  const bg = isDark ? p.p : '#ffffff';
+  const fg = isDark ? '#ffffff' : p.p;
+  const muted = isDark ? 'rgba(255,255,255,0.72)' : 'rgba(10,19,34,0.62)';
+  const cardBg = isDark ? 'rgba(255,255,255,0.06)' : '#ffffff';
+  const cardBorder = isDark ? 'rgba(255,255,255,0.14)' : '#E0E3E8';
+  const stripBg = isDark ? 'rgba(255,255,255,0.04)' : '#FAFAF9';
+  const subPillBg = isDark ? 'rgba(255,255,255,0.14)' : '#F3F4F6';
+  return '<div class="preview-shell">'
+    + '<div class="preview-shell-label">'
+      + '<span class="pill ' + (isDark ? 'dark' : 'light') + '">' + (isDark ? 'Dark' : 'Light') + ' mode</span>'
+      + '<span class="label-text">Sample course hub</span>'
+    + '</div>'
+    + '<div style="background:' + bg + ';color:' + fg + ';font-family:\'Atkinson Hyperlegible\',sans-serif;">'
+      + '<div style="border-bottom:1px solid ' + cardBorder + ';padding:18px 20px 16px;">'
+        + '<div style="font-family:\'Plus Jakarta Sans\',sans-serif;color:' + p.w + ';font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px;">Solano Community College &middot; Summer 2026</div>'
+        + '<h4 style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:23px;font-weight:800;margin-bottom:8px;line-height:1.15;">Human Anatomy</h4>'
+        + '<div style="display:flex;gap:6px;flex-wrap:wrap;">'
+          + '<span style="background:' + p.a + ';color:' + p.p + ';font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;">BIO 004</span>'
+          + '<span style="background:' + subPillBg + ';color:' + fg + ';font-size:10px;font-weight:600;padding:3px 10px;border-radius:99px;">8 weeks &middot; TBL</span>'
+        + '</div>'
+      + '</div>'
+      + '<div style="background:' + stripBg + ';padding:8px 20px;font-size:10px;color:' + muted + ';border-bottom:1px solid ' + cardBorder + ';">M-Th &middot; 8:00 AM &middot; Room 1402 &middot; Dr. Sharilyn Rennie</div>'
+      + '<div style="padding:14px 20px 18px;">'
+        + '<p style="font-size:12px;color:' + muted + ';margin-bottom:14px;line-height:1.6;">This course develops systematic anatomical reasoning through cadaveric study, clinical imaging, and structured team-based inquiry.</p>'
+        + '<div style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:' + muted + ';margin-bottom:8px;">Grade breakdown</div>'
+        + gradeRow('Lab Exams (5)', '35%', 35, p.a, isDark, cardBg, cardBorder)
+        + gradeRow('Midterm Exam (anatomy)', '20%', 20, p.w, isDark, cardBg, cardBorder)
+        + gradeRow('iRAT / tRAT (physiology)', '20%', 20, p.c, isDark, cardBg, cardBorder)
+      + '</div>'
+    + '</div>'
+  + '</div>';
+}
+
+function renderPreview(mode) {
+  if (!currentPalette) return;
+  let html = '';
+  if (mode === 'both' || mode === 'light') html += buildPreviewHTML(currentPalette, 'light');
+  if (mode === 'both' || mode === 'dark') html += buildPreviewHTML(currentPalette, 'dark');
+  previews.innerHTML = html;
+  previews.classList.toggle('single', mode !== 'both');
+}
+
+function openModal(p, originEl) {
+  currentPalette = p;
+  lastFocus = originEl;
+  modalTitle.textContent = p.name + ' — ' + p.source;
+  modeButtons.forEach(b => b.setAttribute('aria-selected', b.dataset.mode === 'both' ? 'true' : 'false'));
+  renderPreview('both');
+  modal.setAttribute('open', '');
+  document.body.style.overflow = 'hidden';
+  modal.querySelector('.modal-close').focus();
+}
+
+function closeModal() {
+  modal.removeAttribute('open');
+  document.body.style.overflow = '';
+  if (lastFocus) { try { lastFocus.focus(); } catch(e) {} }
+}
+
+modal.addEventListener('click', e => {
+  if (e.target.matches('[data-close]')) closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && modal.hasAttribute('open')) closeModal();
+});
+modeButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    modeButtons.forEach(b => b.setAttribute('aria-selected', 'false'));
+    btn.setAttribute('aria-selected', 'true');
+    renderPreview(btn.dataset.mode);
+  });
+});
+
+grid.addEventListener('click', e => {
+  const tile = e.target.closest('article.tile');
+  if (!tile) return;
+  const id = tile.dataset.id;
+  const palette = PALETTES.find(p => p.id === id);
+  if (palette) openModal(palette, tile);
+});
+grid.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const tile = e.target.closest('article.tile');
+  if (!tile) return;
+  e.preventDefault();
+  const id = tile.dataset.id;
+  const palette = PALETTES.find(p => p.id === id);
+  if (palette) openModal(palette, tile);
+});
+
+// Iframe height-sender for Kajabi embed
+(function(){
+  function sh(){ try { window.parent.postMessage({ id:'palette-library', height: document.body.scrollHeight }, '*'); } catch(e){} }
+  if (typeof ResizeObserver !== 'undefined') { const ro = new ResizeObserver(sh); ro.observe(document.body); }
+  window.addEventListener('load', sh);
+  window.addEventListener('resize', sh);
+})();
+</script>
+</body>
+</html>
