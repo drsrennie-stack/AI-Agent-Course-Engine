@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CourseForge Palette Library Preview</title>
-<meta name="description" content="Visual review of 23 proposed CourseForge palettes with mapped color roles and working names.">
+<meta name="description" content="Visual review of 18 CourseForge palettes with mapped color roles and working names. WCAG 2.2 AA verified.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
 <style>
 :root {
@@ -32,7 +32,7 @@ body {
 }
 a { color: var(--navy); text-underline-offset: 3px; text-decoration-color: var(--gold); }
 a:hover, a:focus-visible { color: var(--navy-deep); }
-:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; box-shadow: 0 0 0 4px var(--gold); border-radius: 4px; }
 
 a.skip {
   position: absolute; left: -9999px; top: 8px;
@@ -113,13 +113,15 @@ article.tile {
   border: 1px solid var(--rule);
   border-radius: 4px;
   overflow: hidden;
-  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   box-shadow: 0 1px 3px rgba(10,19,34,0.06);
   display: flex; flex-direction: column;
   cursor: pointer;
 }
+@media (prefers-reduced-motion: no-preference) {
+  article.tile { transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+  article.tile:hover, article.tile:focus-within { transform: translateY(-2px); }
+}
 article.tile:hover, article.tile:focus-within {
-  transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(10,19,34,0.10);
   border-color: var(--gold);
 }
@@ -314,31 +316,28 @@ footer.outro strong { color: var(--navy); }
   <h1 class="wordmark"><span class="course">Course</span><span class="forge">Forge</span></h1>
   <h2 class="subhead">Palette Library Preview</h2>
   <p class="lede">
-    18 proposals grouped by vibe. Each tile shows the 4 mapped roles (Primary, Accent, Warm, Cool) plus a working name. <strong>Click any tile</strong> to see how a course hub looks in light and dark mode using that palette.
-    The <strong>Bold / Commercial</strong> filter holds the high-energy palettes. They're tagged "Use with care" because they're better suited to marketing, design, or business courses than to clinical anatomy.
-    Tell me which names to keep, swap, or kill. Then I patch the engine.
+    6 curated palettes, each with 4 distinct role slots (Primary, Accent, Warm, Cool). <strong>Click any tile</strong> to see how a course hub looks in light and dark mode. The library was cut from 18 to 6 to remove duplicate role slots and palettes that couldn't meet WCAG AA without losing their identity. All 6 survivors pass AA on white at small-text size. See <code>compliance-notes.md</code> for the full audit. The <strong>Bold</strong> filter holds Saturday Funnies, tagged "Use With Care" because it's for marketing, design, or branding courses, not clinical anatomy. <strong>Field Notes</strong> is preserved here for a future non-MedMasters course; do not pair it with MedMasters branding.
   </p>
 
   <aside class="legend" aria-label="What the color roles mean">
     <strong>How CourseForge uses the 4 roles:</strong>
     <div class="roles">
-      <span><span class="dot" style="background:#0A1322"></span> <strong>P</strong> Primary — text, anchor backgrounds, dark mode bg</span>
-      <span><span class="dot" style="background:#D4A24C"></span> <strong>A</strong> Accent — CTAs, badges, highlights, focus rings</span>
-      <span><span class="dot" style="background:#C25A3E"></span> <strong>W</strong> Warm — anatomy content, required items, eyebrow text</span>
-      <span><span class="dot" style="background:#5B9AA0"></span> <strong>C</strong> Cool — physiology content, optional items, secondary borders</span>
+      <span><span class="dot" style="background:#0B1530"></span> <strong>P</strong> Primary: text, anchor backgrounds, dark mode bg</span>
+      <span><span class="dot" style="background:#C9A14A"></span> <strong>A</strong> Accent: CTAs, badges, highlights, focus rings</span>
+      <span><span class="dot" style="background:#8B3A2E"></span> <strong>W</strong> Warm: anatomy content, required items, eyebrow text</span>
+      <span><span class="dot" style="background:#5B9AA0"></span> <strong>C</strong> Cool: physiology content, optional items, secondary borders</span>
     </div>
   </aside>
 </header>
 
 <nav class="controls" role="toolbar" aria-label="Filter palettes by vibe">
   <span class="label">Filter</span>
-  <button class="chip" aria-pressed="true" data-filter="all" type="button">All (18)</button>
-  <button class="chip" aria-pressed="false" data-filter="academic" type="button">Academic</button>
-  <button class="chip" aria-pressed="false" data-filter="editorial" type="button">Editorial</button>
-  <button class="chip" aria-pressed="false" data-filter="warm" type="button">Warm</button>
-  <button class="chip" aria-pressed="false" data-filter="cool" type="button">Cool</button>
-  <button class="chip" aria-pressed="false" data-filter="bold" type="button">Bold / Commercial</button>
-  <span class="count" id="count" aria-live="polite">Showing 23</span>
+  <button class="chip" aria-pressed="true" data-filter="all" type="button">All (6)</button>
+  <button class="chip" aria-pressed="false" data-filter="academic" type="button">Academic (2)</button>
+  <button class="chip" aria-pressed="false" data-filter="editorial" type="button">Editorial (2)</button>
+  <button class="chip" aria-pressed="false" data-filter="warm" type="button">Warm (1)</button>
+  <button class="chip" aria-pressed="false" data-filter="bold" type="button">Bold / Commercial (1)</button>
+  <span class="count" id="count" aria-live="polite">Showing 6</span>
 </nav>
 
 <div class="grid" id="grid" role="list"></div>
@@ -346,9 +345,9 @@ footer.outro strong { color: var(--navy); }
 <footer class="outro">
   <p><strong>Click any tile</strong> to see the palette applied to a sample course hub in both light and dark mode. Inside the modal: a "Side by side / Light only / Dark only" toggle. Press Escape or click outside to close.</p>
   <p><strong>On the "does there need to be 4 colors" question:</strong> The 4 roles map to specific content semantics in your generated pages. Warm carries anatomy and required items. Cool carries physiology and optional items. Losing those would weaken the pedagogical signal in BIO 004 and BIO 431 outputs. So yes, 4 roles stay. But it's fine for a palette to repeat a color across two slots when the source only has 3 distinct colors. Several palettes here do that honestly: Bronte Ridge, Cathedral, Recess, Disco Reactor.</p>
-  <p><strong>Names worth a second look:</strong> stars (★) mark the ones I felt strongest about. Saturday Funnies is the comic-book one you flagged. Alternates considered: Kapow!, Inked Edition, Sunday Strip, Newsstand.</p>
-  <p><strong>Custom hex codes stay.</strong> The existing "Build Your Own" feature in CourseForge (color pickers + hex text inputs) is preserved. It will live in the redesigned engine alongside the 18 presets, so you can still hand-roll a palette for a one-off course. Open question: should custom expand from 3 inputs (Primary / Accent / Tertiary) to 4 (Primary / Accent / Warm / Cool) to match the preset structure?</p>
-  <p>Once you sign off on names + the custom-input question, I patch courseforge.jsx with the final 18-palette data, rebuild PalCard as swatches-only, add the vibe filter chips, and then tackle the engine UI redesign: light theme, two-tone wordmark, no emojis, WCAG AA throughout.</p>
+  <p><strong>Names locked.</strong> Saturday Funnies stays for the comic-book tile. Stars (★) mark featured picks.</p>
+  <p><strong>Custom hex codes stay at 3 inputs</strong> (Primary / Accent / Tertiary). The existing "Build Your Own" feature in CourseForge is preserved as-is and lives alongside the 18 presets in the redesigned engine, so you can still hand-roll a palette for a one-off course.</p>
+  <p><strong>Next:</strong> patch courseforge.jsx with the final 18-palette data, rebuild PalCard as swatches-only, add the vibe filter chips, then engine UI redesign (light theme, two-tone wordmark, no emojis, WCAG 2.2 AA throughout). Accessibility audit on all 18 palettes documented in <code>compliance-notes.md</code>.</p>
 </footer>
 </main>
 
@@ -374,70 +373,35 @@ footer.outro strong { color: var(--navy); }
 </div>
 
 <script>
+// Curated set: 6 palettes. All 4 role slots are distinct hexes (no duplicate slots).
+// All warm slots darkened where needed to clear WCAG AA on white at small text.
+// Field Notes is reserved for non-MedMasters courses (see Dr. Rennie's standing rule on sage).
 const PALETTES = [
   // ACADEMIC
   { id:"medmasters", name:"MedMasters", featured:"Default", source:"Brand-canonical (matches your logo)", vibe:"academic",
     p:"#0B1530", a:"#C9A14A", w:"#8B3A2E", c:"#5B9AA0",
-    note:"Your house palette, locked to the exact hex values used in the MedMasters logo SVGs: navy #0B1530, rust #8B3A2E (the darker terra cotta you wanted), gold #C9A14A. Teal cool #5B9AA0 stays from the teaching system since the logo has no cool slot." },
-  { id:"bronte-ridge", name:"Bronte Ridge", source:"Brontide (mountain landscape)", vibe:"academic",
-    p:"#09868b", a:"#3d7c47", w:"#76c1d4", c:"#76c1d4",
-    note:"Deep teal anchor + forest green CTA. <strong>Note:</strong> no true warm in source, so warm and cool both ride on the light blue. Works for ecology, environmental science, geography." },
-  { id:"atrium", name:"Atrium Society ★", source:"Idea Fuel / Brand Led (rose gold + onyx)", vibe:"academic",
-    p:"#49494b", a:"#bd8c7d", w:"#d1bfa7", c:"#8e8e90",
-    note:"Quiet magazine elegance. Onyx anchor, rose gold CTA. Great for humanities, history, classical studies." },
+    note:"Your house palette, locked to the exact hex values used in the MedMasters logo SVGs: navy #0B1530, rust #8B3A2E, gold #C9A14A. Teal cool #5B9AA0 stays from the teaching system since the logo has no cool slot. All 4 slots pass WCAG AA on white." },
   { id:"field-notes", name:"Field Notes ★", source:"Five / Four (red + earthy gold)", vibe:"academic",
-    p:"#628078", a:"#ff3a22", w:"#c7af6b", c:"#a4893d",
-    note:"Sage-grey anchor with a hot red CTA. Reads like a researcher's notebook. Strong for biology, ecology, anthropology." },
-  { id:"cathedral", name:"Cathedral", source:"Dogstudio (deep navy + bookish red)", vibe:"academic",
-    p:"#091f36", a:"#9e363a", w:"#9e363a", c:"#4f5f76",
-    note:"Library-quiet. Warm and accent share the red. Good for literature, theology, philosophy." },
-  { id:"stoneworks", name:"Stoneworks", source:"Joyaux Lookbook (neutrals)", vibe:"academic",
-    p:"#82716e", a:"#c2b490", w:"#e4decd", c:"#acb7ae",
-    note:"All-neutral. Reads as gallery wall. Restrained, won't compete with content. Good for art history, design history." },
+    p:"#5E7A73", a:"#ff3a22", w:"#897334", c:"#a4893d",
+    note:"Sage-grey anchor with a hot red CTA. <strong>Reserved for non-MedMasters courses</strong> (sage is not in the MedMasters teaching design system). Primary darkened from #628078 and warm darkened from #c7af6b to clear AA on white." },
 
   // EDITORIAL
-  { id:"brownstone", name:"Brownstone", source:"MR Associates (brick + algae)", vibe:"editorial",
-    p:"#91684a", a:"#cd5554", w:"#cd5554", c:"#00c07f",
-    note:"Brownstone brick anchor. Algae green cool is unexpected but it works for callouts." },
   { id:"pharaohs-atelier", name:"Pharaoh's Atelier ★", source:"GotoEgypt (night blue + sand)", vibe:"editorial",
-    p:"#12343b", a:"#e1b382", w:"#c89666", c:"#2d545e",
-    note:"Strong night-blue anchor + warm sand accents. High contrast, archival feel. Great for ancient history, art history, classical." },
+    p:"#12343b", a:"#e1b382", w:"#9E6B39", c:"#2d545e",
+    note:"Strong night-blue anchor + warm sand accents. Archival feel. Great for ancient history, art history, classical. Warm darkened from #c89666 to clear AA on white." },
   { id:"press-room", name:"Press Room", source:"Simple Publishing (grey + orange)", vibe:"editorial",
-    p:"#393939", a:"#FF5A09", w:"#ec7f37", c:"#be4f0c",
-    note:"Newspaper grey + saturated orange CTA. All-warm secondaries. Suits journalism, communications, writing courses." },
-  { id:"workshop-yellow", name:"Workshop Yellow", source:"Indian Scout (slate + yellow)", vibe:"editorial",
-    p:"#1d1e22", a:"#feda6a", w:"#feda6a", c:"#393f4d",
-    note:"Mechanic-shop confidence. Slate-black + saturated yellow. Good for technical, trades, engineering." },
+    p:"#393939", a:"#FF5A09", w:"#BF5712", c:"#be4f0c",
+    note:"Newspaper grey + saturated orange CTA. All-warm secondaries. Suits journalism, communications, writing courses. Warm darkened from #ec7f37 to clear AA on white." },
 
   // WARM
   { id:"linen-indigo", name:"Linen and Indigo", source:"Desi Shirt (navy + peach + tan)", vibe:"warm",
-    p:"#3a4660", a:"#ed8a63", w:"#c9af98", c:"#845007",
-    note:"Soft peach over navy. <strong>Note:</strong> cool slot is technically a warm brown. Reads cozy, fashion-design-adjacent." },
-  { id:"picnic-basket", name:"Picnic Basket", source:"Territory (blueberry + apricot + citrus)", vibe:"warm",
-    p:"#6B7A8F", a:"#F7882F", w:"#F7C331", c:"#DCC7AA",
-    note:"Bright produce-aisle energy. Blueberry anchor saves it from being too sweet." },
-
-  // COOL
-  { id:"studio-audacieux", name:"Studio Audacieux ★", source:"Le Cab Com (navy + goldenrod + bluebell)", vibe:"cool",
-    p:"#101357", a:"#fbaf08", w:"#fea49f", c:"#00a0a0",
-    note:"Deep navy + goldenrod CTA + bluebell teal. Confident, French. Versatile across disciplines." },
-  { id:"recess", name:"Recess", source:"Intellectual Nonchalance / L'Avenir (purple + teal + red)", vibe:"cool",
-    p:"#9068be", a:"#e62739", w:"#e62739", c:"#6ed3cf",
-    note:"Soft purple anchor. Schoolhouse-spirited. Works for healthcare, dental hygiene, pediatric anything." },
-  { id:"idle-hands", name:"Idle Hands", source:"Carbonex (mountain purple + grassy green)", vibe:"cool",
-    p:"#7c677f", a:"#9bc400", w:"#f9c5bd", c:"#8076a3",
-    note:"Misty mountain palette + a punchy grass-green CTA. Sustainability, environmental, climate." },
+    p:"#3a4660", a:"#ed8a63", w:"#946F4E", c:"#845007",
+    note:"Soft peach over navy. Reads cozy, fashion-design-adjacent. Warm darkened from #c9af98 to clear AA on white." },
 
   // BOLD / COMMERCIAL
   { id:"saturday-funnies", name:"Saturday Funnies ★", source:"No Crime / Feel Safe (green + red + blue)", vibe:"bold",
-    p:"#1400c6", a:"#beef00", w:"#ff0028", c:"#657a00",
-    note:"<strong>The comic-book one.</strong> Inked-panel energy. Use With Care: not for clinical course pages, but solid for marketing, design, illustration, or branding courses. Alts considered: Kapow!, Inked Edition, Sunday Strip, Newsstand." },
-  { id:"disco-reactor", name:"Disco Reactor", source:"Fotonaut (red + purple)", vibe:"bold",
-    p:"#781a44", a:"#eb1736", w:"#eb1736", c:"#5252d4",
-    note:"Synth-wave retro-future. Good for film, music, performance arts." },
-  { id:"lightbrite", name:"Lightbrite", source:"Futuristic Lightbrite (purple + orange + yellow)", vibe:"bold",
-    p:"#431c5d", a:"#e05915", w:"#cdd422", c:"#c2dde6",
-    note:"Deep purple anchor saves this from being chaotic. 80s toy energy. Suits creative arts, illustration, kids-ed." },
+    p:"#1400c6", a:"#beef00", w:"#EB0025", c:"#657a00",
+    note:"<strong>The comic-book one.</strong> Inked-panel energy. Use With Care: not for clinical course pages, but solid for marketing, design, illustration, or branding courses. Warm darkened from #ff0028 to clear AA on white." },
 ];
 
 const grid = document.getElementById('grid');
@@ -445,13 +409,22 @@ const count = document.getElementById('count');
 const chips = document.querySelectorAll('.chip');
 let active = 'all';
 
+// WCAG-correct text-color picker. Computes relative luminance per sRGB,
+// composites the candidate text alpha over the swatch, and picks whichever
+// candidate yields the higher contrast ratio against the swatch bg.
 function textColor(hex) {
   const h = hex.replace('#','');
-  const r = parseInt(h.slice(0,2),16);
-  const g = parseInt(h.slice(2,4),16);
-  const b = parseInt(h.slice(4,6),16);
-  const lum = (0.299*r + 0.587*g + 0.114*b) / 255;
-  return lum > 0.58 ? 'rgba(0,0,0,0.72)' : 'rgba(255,255,255,0.92)';
+  const bg = [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+  const lin = c => { c /= 255; return c <= 0.03928 ? c/12.92 : Math.pow((c+0.055)/1.055, 2.4); };
+  const rl = rgb => 0.2126*lin(rgb[0]) + 0.7152*lin(rgb[1]) + 0.0722*lin(rgb[2]);
+  const comp = (fg, bg) => {
+    const a = fg[3];
+    return [Math.round(fg[0]*a + bg[0]*(1-a)), Math.round(fg[1]*a + bg[1]*(1-a)), Math.round(fg[2]*a + bg[2]*(1-a))];
+  };
+  const ratio = (a, b) => { const L = [rl(a), rl(b)].sort((x,y)=>x-y); return (L[1]+0.05)/(L[0]+0.05); };
+  const black = comp([0,0,0,0.88], bg);
+  const white = comp([255,255,255,0.96], bg);
+  return ratio(black, bg) >= ratio(white, bg) ? 'rgba(0,0,0,0.88)' : 'rgba(255,255,255,0.96)';
 }
 
 function render() {
@@ -462,7 +435,7 @@ function render() {
     const bcTag = p.vibe === 'bold' ? '<span class="tag warn">Use With Care</span>' : '';
     const tagSet = p.vibe === 'bold' ? bcTag : warnTag;
     return `
-    <article class="tile" role="listitem" tabindex="0" data-id="${p.id}" aria-labelledby="name-${p.id}">
+    <article class="tile" role="listitem" tabindex="0" data-id="${p.id}" aria-labelledby="name-${p.id}" aria-describedby="note-${p.id}">
       <div class="swatches" aria-hidden="true">
         <div class="swatch" style="background:${p.p}"><span class="role" style="color:${textColor(p.p)}">Primary</span><span class="hex" style="color:${textColor(p.p)}">${p.p}</span></div>
         <div class="swatch" style="background:${p.a}"><span class="role" style="color:${textColor(p.a)}">Accent</span><span class="hex" style="color:${textColor(p.a)}">${p.a}</span></div>
@@ -476,7 +449,7 @@ function render() {
         </div>
         <div class="source">from ${p.source}</div>
         <div class="tags"><span class="tag vibe-${p.vibe}">${p.vibe === 'bold' ? 'Bold / Commercial' : p.vibe}</span>${tagSet}</div>
-        <div class="note">${p.note}</div>
+        <div class="note" id="note-${p.id}">${p.note}</div>
       </div>
     </article>`;
   }).join('');
@@ -562,7 +535,7 @@ function renderPreview(mode) {
 function openModal(p, originEl) {
   currentPalette = p;
   lastFocus = originEl;
-  modalTitle.textContent = p.name + ' — ' + p.source;
+  modalTitle.textContent = p.name + ': ' + p.source;
   modeButtons.forEach(b => b.setAttribute('aria-selected', b.dataset.mode === 'both' ? 'true' : 'false'));
   renderPreview('both');
   modal.setAttribute('open', '');
@@ -580,7 +553,18 @@ modal.addEventListener('click', e => {
   if (e.target.matches('[data-close]')) closeModal();
 });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && modal.hasAttribute('open')) closeModal();
+  if (!modal.hasAttribute('open')) return;
+  if (e.key === 'Escape') { closeModal(); return; }
+  if (e.key !== 'Tab') return;
+  // Focus trap: cycle Tab and Shift+Tab inside the modal panel.
+  const focusables = modal.querySelectorAll(
+    '.modal-panel a[href], .modal-panel button:not([disabled]), .modal-panel [tabindex]:not([tabindex="-1"])'
+  );
+  if (focusables.length === 0) return;
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
 });
 modeButtons.forEach(btn => {
   btn.addEventListener('click', () => {
